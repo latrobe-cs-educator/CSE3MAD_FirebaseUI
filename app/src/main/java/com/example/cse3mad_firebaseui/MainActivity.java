@@ -52,11 +52,17 @@ public class MainActivity extends AppCompatActivity {
                     startApp();
                 } else {
                     // Sign in failed. If response is null the user canceled the
-                    // sign-in flow using the back button. Otherwise check
+                    // sign-in flow using the back button.
+
+                    // The following will use generic error msg
+                    Log.d(TAG, "Sign in fail Error: " + response.getError());
+
+                    // OR you can use this to access a custom error message from the custom class, Either is fine.
                     int errorCode = response.getError().getErrorCode();
                     String errorString =FirebaseUIErrorHelper.getErrorDefinition(errorCode);
-                    Log.d(TAG, "Sign in fail Errorcode:  " + errorCode);
-                    Toast.makeText(getApplicationContext(),"Sign in fail Errorcode: " + errorCode, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, errorString);
+
+                    //sign in to app
                     startSignIn();
                 }
             });
@@ -68,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         new AuthUI.IdpConfig.GoogleBuilder().build(),
                         new AuthUI.IdpConfig.EmailBuilder().build()))
                 .setLogo(R.drawable.mylogo)
-                .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+                //.setIsSmartLockEnabled(!BuildConfig.DEBUG) Optional to turn o
                 .build();
         signInLauncher.launch(signInIntent);
     }
